@@ -853,7 +853,7 @@ PROVIDED_TEST("Stress Test: Inserts/searches/deletes work in expected time O(1) 
 #include "filelib.h"
 #include "Demos/Timer.h"
 PROVIDED_TEST("Stress test: Core functions do not cause stack overflows (should take at most 15 seconds)") {
-    SHOW_ERROR("Stress test is disabled by default. To run it, comment out line " + to_string(__LINE__) + " of " + getTail(__FILE__) + ".");
+    // SHOW_ERROR("Stress test is disabled by default. To run it, comment out line " + to_string(__LINE__) + " of " + getTail(__FILE__) + ".");
     const int kTableSize = 1000000;
 
     /* Create a table with 1,000,000 slots, then fill in the first 999,999 of them. */
@@ -890,7 +890,7 @@ PROVIDED_TEST("Stress test: Core functions do not cause stack overflows (should 
 
 #include <fstream>
 PROVIDED_TEST("Stress Test: Handles large workflows with little free space (should take at most fifteen seconds)") {
-    SHOW_ERROR("Stress test is disabled by default. To run it, comment out line " + to_string(__LINE__) + " of " + getTail(__FILE__) + ".");
+    // SHOW_ERROR("Stress test is disabled by default. To run it, comment out line " + to_string(__LINE__) + " of " + getTail(__FILE__) + ".");
 
     Vector<string> english;
     ifstream input("res/EnglishWords.txt");
