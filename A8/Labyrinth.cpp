@@ -2,12 +2,64 @@
 using namespace std;
 
 bool isPathToFreedom(MazeCell* start, const string& moves) {
-    /* TODO: Delete this comment and the next few lines, then implement
-     * this function.
-     */
-    (void) start;
-    (void) moves;
-    return false;
+    int steps = moves.length();
+    bool spellBook=0, potion=0, wand=0;
+    for(int i=0;i<steps;i++){
+        if(start->whatsHere==Item::WAND) {
+            wand=1;
+        }
+        if(start->whatsHere==Item::SPELLBOOK) {
+            spellBook=1;
+        }
+        if(start->whatsHere==Item::POTION) {
+            potion=1;
+        }
+        
+        if(moves[i]=='N'){
+            if(start->north == nullptr) {
+                return false;
+            }
+            else{
+                start = start->north;
+            }
+        }   
+        if(moves[i]=='S'){
+            if(start->south == nullptr) {
+                return false;
+            }
+            else{
+                start = start->south;
+            }
+        }
+       if(moves[i]=='E'){
+            if(start->east == nullptr) {
+                return false;
+            }
+            else{
+                start = start->east;
+            }
+        }
+       if(moves[i]=='W'){
+            if(start->west == nullptr) {
+                return false;
+            }
+            else{
+                start = start->west;
+            }
+        }
+
+    }
+    if(start->whatsHere==Item::WAND) {
+        wand=1;
+    }
+    if(start->whatsHere==Item::SPELLBOOK) {
+        spellBook=1;
+    }
+    if(start->whatsHere==Item::POTION) {
+        potion=1;
+    }
+    if(spellBook&&potion&&wand) return true;
+    else return false;
 }
 
 

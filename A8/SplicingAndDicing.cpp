@@ -1,4 +1,5 @@
 #include "SplicingAndDicing.h"
+#include <cstddef>
 using namespace std;
 
 /**
@@ -9,8 +10,15 @@ using namespace std;
  * (e.g. Vector, HashSet, etc.).
  */
 void deleteNucleotides(Nucleotide* dna) {
-    /* TODO: Delete this comment and the next line and implement this function. */
-    (void) dna;
+    if(dna == nullptr) return;
+    Nucleotide* curPtr = dna;
+    Nucleotide* nextPtr = dna->next;
+    while(nextPtr != nullptr){
+        delete curPtr;
+        curPtr = nextPtr;
+        nextPtr = curPtr->next;
+    }
+    delete curPtr;
 }
 
 /**
@@ -21,9 +29,17 @@ void deleteNucleotides(Nucleotide* dna) {
  * (e.g. Vector, HashSet, etc.).
  */
 string fromDNA(Nucleotide* dna) {
-    /* TODO: Delete this comment and the next lines and implement this function. */
-    (void) dna;
-    return "";
+    if(dna == nullptr) return "";
+    string res = "";
+    Nucleotide* curPtr = dna;
+    Nucleotide* nextPtr = dna->next;
+    while(nextPtr != nullptr){
+        res += curPtr->value;
+        curPtr = nextPtr;
+        nextPtr = curPtr->next;
+    }
+    res += curPtr->value;
+    return res;
 }
 
 /**
@@ -34,9 +50,29 @@ string fromDNA(Nucleotide* dna) {
  * (e.g. Vector, HashSet, etc.).
  */
 Nucleotide* toStrand(const string& str) {
-    /* TODO: Delete this comment and the next lines and implement this function. */
-    (void) str;
-    return nullptr;
+    int length = str.length();
+    if(length == 0) return nullptr;
+
+    Nucleotide* dna = new Nucleotide;
+    dna->value = str[0];
+    dna->prev = nullptr;
+    dna->next = nullptr;
+    Nucleotide* curPtr = dna;
+    Nucleotide* nextPtr = dna->next;
+    for(int i=1;i<length;i++){
+
+        nextPtr = new Nucleotide;
+
+        nextPtr->value = str[i];
+        nextPtr->prev = curPtr;
+        nextPtr->next = nullptr;
+
+        curPtr->next = nextPtr;
+
+        curPtr = nextPtr;
+        nextPtr = curPtr->next;
+    }
+    return dna;
 }
 
 /**
@@ -49,9 +85,26 @@ Nucleotide* toStrand(const string& str) {
  * This function should not use any containers (e.g. Vector, HashSet, etc.)
  */
 Nucleotide* findFirst(Nucleotide* dna, Nucleotide* target) {
-    /* TODO: Delete this comment and the next lines and implement this function. */
-    (void) dna;
-    (void) target;
+    if(target == nullptr) return dna;
+    Nucleotide* p1 = dna;
+    Nucleotide* p2 = target;
+    Nucleotide* res = dna;
+    while(1){
+        if(p2==nullptr) {
+            return res;
+        }
+        if(p1==nullptr) {
+            return nullptr;
+        }
+        if(p1->value == p2->value){
+            p1 = p1->next;
+            p2 = p2->next;
+        } else {
+            res = res->next;
+            p1 = res;
+            p2 = target;
+        }
+    }
     return nullptr;
 }
 
@@ -67,10 +120,47 @@ Nucleotide* findFirst(Nucleotide* dna, Nucleotide* target) {
  * This function should not use any containers (e.g. Vector, HashSet, etc.)
  */
 bool spliceFirst(Nucleotide*& dna, Nucleotide* target) {
-    /* TODO: Delete this comment and the next lines and implement this function. */
-    (void) dna;
-    (void) target;
-    return false;
+    if(target == nullptr) return true;
+
+    Nucleotide* cur = findFirst(dna, target);
+
+    if(cur == nullptr) return false;
+
+    bool flag = 0;
+    if(cur == dna) flag = 1;
+
+    Nucleotide* _target = target;
+    Nucleotide* curNext = nullptr;
+
+    while(_target!=nullptr){
+        if(cur->prev != nullptr){
+            if(cur->next != nullptr){
+                cur->prev->next = cur->next;
+                cur->next->prev = cur->prev;
+                curNext = cur->next;
+                delete cur;
+                cur = curNext;
+            } else {
+                cur->prev->next = nullptr;
+                delete cur;
+                return true;
+            }
+        } else{
+            if(cur->next != nullptr){
+                cur->next->prev = nullptr;
+                curNext = cur->next;
+                delete cur;
+                cur = curNext;
+            } else {
+                delete cur;
+                dna = nullptr;
+                return true;
+            }
+        }
+        _target = _target->next;
+    }
+    if(flag) dna = cur;
+    return true;
 }
 
 
