@@ -3,6 +3,9 @@
 #include "Demos/Bit.h"
 #include "GUI/MemoryDiagnostics.h"
 #include "queue.h"
+#include "priorityqueue.h"
+#include "map.h"
+#include "vector.h"
 #include <string>
 #include <ostream>
 
